@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Torture Game 2X</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#111;color:#ddd;font:16px Arial,sans-serif}body{display:flex;flex-direction:column}header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#1c1c1c;gap:12px}h1{font-size:16px;margin:0;font-weight:500}button{border:1px solid #777;background:#292929;color:#fff;padding:8px 16px;cursor:pointer;font:inherit}button:focus-visible{outline:2px solid #fff}main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}#unityContainer{width:min(100vw,calc((100vh - 60px)*1.333333));height:min(calc(100vw * .75),calc(100vh - 60px));background:#171717}#loading{position:absolute;text-align:center;max-width:90%;padding:24px;background:#171717}progress{display:block;width:240px;max-width:100%;margin:18px auto;accent-color:#a44242}#error{white-space:pre-wrap}canvas{outline:none}#play{min-width:140px}footer{font-size:14px;color:#aaa;padding:8px;text-align:center} [hidden]{display:none!important}
+</style>
+</head><body><header><h1>The Torture Game 2X</h1><button id="fullscreen" disabled>Full screen</button></header>
+<main><div id="unityContainer" aria-label="Game"></div><div id="loading"><button id="play">Play</button><div id="status" role="status">Mouse and keyboard recommended</div><progress id="progress" value="0" max="1" hidden></progress><p id="error" role="alert" hidden></p></div></main>
+<script src="Build/UnityLoader.js"></script>
+<script>
+var unityInstance;
+var play=document.getElementById('play'),statusText=document.getElementById('status'),progress=document.getElementById('progress');
+function fail(message){var error=document.getElementById('error');error.hidden=false;error.textContent=message;statusText.textContent='Unable to start the game';progress.hidden=true;}
+play.onclick=function(){play.hidden=true;progress.hidden=false;statusText.textContent='Loading game…';try{unityInstance=UnityLoader.instantiate('unityContainer','Build/schooladminsfinnagetpissedatthis.json',{onProgress:function(instance,value){progress.value=value;if(value===1){document.getElementById('loading').hidden=true;document.getElementById('fullscreen').disabled=false;}},Module:{onAbort:function(reason){fail('The game stopped: '+reason);}}});}catch(e){fail(e.message);}};
+document.getElementById('fullscreen').onclick=function(){if(unityInstance)unityInstance.SetFullscreen(1);};
+if(location.protocol==='file:'){play.disabled=true;fail('Run Play-WebPort.cmd, or serve this folder with a web server.');}
+</script></body></html>
